@@ -6,6 +6,8 @@
 
 using namespace std;
 
+
+
 struct Ternary{
     char c;
     Ternary* left, mid, right;
@@ -18,8 +20,10 @@ struct Prefix{
     bool endOfWord;
 };
 
+
+
 void addToThree(int type, char* word){
-    
+
 }
 
 int main()
