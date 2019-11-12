@@ -18,6 +18,10 @@ struct Prefix{
     bool endOfWord;
 };
 
+void addToThree(int type, char* word){
+    
+}
+
 int main()
 {
     cout << "Hello world!" << endl;
