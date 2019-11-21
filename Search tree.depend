@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1574344438 source:c:\users\alunom33\desktop\searchthree\searchtree.cpp
+	<iostream>
+	<fstream>
+	<stdio.h>
+	<stdlib.h>
+

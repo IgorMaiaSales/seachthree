@@ -29,10 +29,22 @@ Ternary* criaTernary(char c, int endOfWord){
     tmp->c = c;
     tmp->endOfWord = endOfWord;
     tmp->left = tmp->mid = tmp->right = NULL;
+    return tmp;
 }
 
 void addTernaryTree(Ternary** arv, const char* word){
-    if(*arv = NULL && word[1] == '\n') criaTernary(word[0], 1);
+    if(*arv == NULL){
+        *arv = criaTernary(word[0], word[1] == '\0');
+        if (word[1] == '\0') return;
+    }
+
+    if(word[0] == (*arv)->c){
+        addTernaryTree(&(*arv)->mid, word+1);
+    }else  if(word[0] > (*arv)->c){
+        addTernaryTree(&(*arv)->right, word);
+    }else{
+        addTernaryTree(&(*arv)->left, word);
+    }
 }
 
 void addToThree(int type, Generic* avr, const char* word){
@@ -43,6 +55,15 @@ void addToThree(int type, Generic* avr, const char* word){
         case 1:
             break;
     }
+}
+
+void printTree(Ternary *arv){
+    if(arv == NULL) return;
+
+    printf("%c \n", arv->c);
+    printTree(arv->left);
+    printTree(arv->mid);
+    printTree(arv->right);
 }
 
 int main()
@@ -59,7 +80,8 @@ int main()
         }
     }
 
-    cout << "Hello world!" << endl;
+    printTree(myArv.avrTernary);
+
     return 0;
 }
 
