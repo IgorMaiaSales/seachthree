@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -6,11 +7,9 @@
 
 using namespace std;
 
-
-
 struct Ternary{
     char c;
-    Ternary* left, mid, right;
+    Ternary *left, *mid, *right;
     bool endOfWord;
 };
 
@@ -20,14 +19,47 @@ struct Prefix{
     bool endOfWord;
 };
 
+union Generic{
+    Ternary *avrTernary;
+    Prefix *arvPrefix;
+};
 
+Ternary* criaTernary(char c, int endOfWord){
+    Ternary* tmp = (Ternary*) malloc(sizeof(Ternary));
+    tmp->c = c;
+    tmp->endOfWord = endOfWord;
+    tmp->left = tmp->mid = tmp->right = NULL;
+}
 
-void addToThree(int type, char* word){
+void addTernaryTree(Ternary** arv, const char* word){
+    if(*arv = NULL && word[1] == '\n') criaTernary(word[0], 1);
+}
 
+void addToThree(int type, Generic* avr, const char* word){
+    switch (type){
+        case 0:
+            addTernaryTree(&(avr->avrTernary), word);
+            break;
+        case 1:
+            break;
+    }
 }
 
 int main()
 {
+    Generic myArv;
+    myArv.avrTernary = NULL;
+    myArv.arvPrefix = NULL;
+
+    string line;
+    ifstream mystream("palavras.txt");
+    if(mystream.is_open()){
+        while(getline(mystream, line)){
+            addToThree(0, &myArv, line.c_str());
+        }
+    }
+
     cout << "Hello world!" << endl;
     return 0;
 }
+
