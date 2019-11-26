@@ -134,6 +134,19 @@ Ternary **arvBuscaDesb(Ternary **a){
     return NULL;
 }
 
+void printTernary(Ternary *arv, string tmp){
+
+}
+
+void searchTernary(char *word, Ternary *arv, string tmp){
+    if (*word == 10) printTernary(arv, tmp);
+    if (arv->c == *word){
+        tmp.push_back(arv->c);
+        searchTernary(word++, arv->mid, tmp);
+    }else if(*word < arv->c) searchTernary(word, arv->left, tmp);
+    else if(*word > arv->c) searchTernary(word, arv->right, tmp);
+}
+
 int main()
 {
     Generic myArv;
@@ -141,7 +154,7 @@ int main()
     myArv.arvPrefix = NULL;
 
     string line;
-    ifstream mystream("palavras.txt");
+    ifstream mystream("palavras2.txt");
     if(mystream.is_open()){
         while(getline(mystream, line)){
             addToThree(0, &myArv, line.c_str());
@@ -154,6 +167,10 @@ int main()
     while(arvBuscaDesb(&myArv.avrTernary)!=NULL) arvRotaciona(arvBuscaDesb(&myArv.avrTernary));
 
     printTree(myArv.avrTernary);
+
+    string tmp = NULL;
+
+    searchTernary("u", myArv.avrTernary, tmp);
 
     return 0;
 }
