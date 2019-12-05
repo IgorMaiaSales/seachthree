@@ -12,6 +12,7 @@ struct Ternary{
     char c;
     Ternary *left, *mid, *right;
     bool endOfWord;
+    int balance;
 };
 
 struct Prefix{
@@ -30,6 +31,7 @@ Ternary* criaTernary(char c, int endOfWord){
     tmp->c = c;
     tmp->endOfWord = endOfWord;
     tmp->left = tmp->mid = tmp->right = NULL;
+    tmp->balance = 0;
     return tmp;
 }
 
@@ -114,24 +116,27 @@ void arvRotaciona(Ternary **a){
 }
 
 Ternary **arvBuscaDesb(Ternary **a){
-    if(*a == NULL) return NULL;
+    if(*a == NULL || (*a)->balance == 3) return NULL;
 
-    if((*a)->left != NULL){
+    if((*a)->left != NULL && (*a)->balance == 0){
         Ternary **tmp = arvBuscaDesb(&(*a)->left);
         if(tmp != NULL) return tmp;
     }
+    (*a)->balance++;
 
-    if((*a)->right != NULL){
+    if((*a)->right != NULL && (*a)->balance == 1){
         Ternary **tmp = arvBuscaDesb(&(*a)->right);
         if(tmp != NULL) return tmp;
     }
+    (*a)->balance++;
 
     if(arvBalanceamento(*a) > 1 || arvBalanceamento(*a) < -1) return a;
 
-    if((*a)->mid != NULL){
+    if((*a)->mid != NULL && (*a)->balance == 2){
         Ternary **tmp = arvBuscaDesb(&(*a)->mid);
         if(tmp != NULL) return tmp;
     }
+    (*a)->balance++;
 
     return NULL;
 }
@@ -155,7 +160,8 @@ void searchTernary(char *word, Ternary *arv, string tmp){
     }
     else if (arv->c == word[0]){
         tmp.push_back(arv->c);
-        searchTernary(word++, arv->mid, tmp);
+        word++;
+        searchTernary(word, arv->mid, tmp);
     }else if(word[0] < arv->c) searchTernary(word, arv->left, tmp);
     else if(word[0] > arv->c) searchTernary(word, arv->right, tmp);
 }
@@ -172,8 +178,8 @@ int main()
     if(mystream.is_open()){
         while(getline(mystream, line)){
             addToThree(0, &myArv, line.c_str());
-            Ternary **b = arvBuscaDesb(&myArv.avrTernary);
-            arvRotaciona(b);
+//            Ternary **b = arvBuscaDesb(&myArv.avrTernary);
+//            arvRotaciona(b);
             counter++;
             if (counter%100==0) {
                 cout << counter << endl;
@@ -183,7 +189,7 @@ int main()
     cout << "done" <<endl;
 //    printTree(myArv.avrTernary);
 //    cout << endl;
-    /*Ternary **a;
+    Ternary **a;
     counter=0;
     do{
        a = arvBuscaDesb(&myArv.avrTernary);
@@ -193,14 +199,14 @@ int main()
                 cout << counter << endl;
             }
     }while(a != NULL);
-    cout << "done" <<endl;*/
+    cout << "done" <<endl;
 
 //    printTree(myArv.avrTernary);
 //    cout << endl;
 
     string tmp = "";
 
-    searchTernary((char*)"u", myArv.avrTernary, tmp);
+    searchTernary((char*)"palav", myArv.avrTernary, tmp);
 
     return 0;
 }
