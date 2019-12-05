@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include<windows.h>
+#include<conio.h>
+#include <time.h>
 
 #define max 26
 
@@ -141,22 +144,28 @@ Ternary **arvBuscaDesb(Ternary **a){
     return NULL;
 }
 
-void printTernary(Ternary *arv, string tmp){
-    if(arv == NULL) return;
-    printTernary(arv->left, tmp);
+void printTernary(Ternary *arv, string tmp, int *i){
+    if(arv == NULL || *i >= 10) return;
+    printTernary(arv->left, tmp, i);
 
     tmp.push_back(arv->c);
-    if(arv->endOfWord == true) cout << tmp << endl;
-    printTernary(arv->mid, tmp);
+    if(arv->endOfWord == true){
+        if(*i >= 10) return;
+        cout << *i << " " << tmp << endl;
+        (*i)++;
+    }
+    printTernary(arv->mid, tmp, i);
 
     tmp.pop_back();
-    printTernary(arv->right, tmp);
+    printTernary(arv->right, tmp, i);
 }
 
-void searchTernary(char *word, Ternary *arv, string tmp){
+void searchTernary(const char *word, Ternary *arv, string tmp){
     if (arv->c == word[0] && word[1] == '\0'){
         tmp.push_back(arv->c);
-        printTernary(arv->mid, tmp);
+        int i = 0;
+        printTernary(arv->mid, tmp, &i);
+        //
     }
     else if (arv->c == word[0]){
         tmp.push_back(arv->c);
@@ -166,38 +175,38 @@ void searchTernary(char *word, Ternary *arv, string tmp){
     else if(word[0] > arv->c) searchTernary(word, arv->right, tmp);
 }
 
+void gotoxy(int x, int y){
+    // COLL / ROW
+     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),(COORD){x-1,y-1});
+}
+
+void ternaryList(string prefixo){
+    gotoxy(1,3);
+    cout << "OK" << prefixo << endl;
+    gotoxy(1,1);
+}
+
 int main()
 {
+    clock_t tempo = clock();
+
     Generic myArv;
     myArv.avrTernary = NULL;
     myArv.arvPrefix = NULL;
 
     string line;
-    ifstream mystream("palavras.txt");
-    int counter=0;
+    ifstream mystream("palavras3.txt");
     if(mystream.is_open()){
         while(getline(mystream, line)){
             addToThree(0, &myArv, line.c_str());
-//            Ternary **b = arvBuscaDesb(&myArv.avrTernary);
-//            arvRotaciona(b);
-            counter++;
-            if (counter%100==0) {
-                cout << counter << endl;
-            }
         }
     }
     cout << "done" <<endl;
-//    printTree(myArv.avrTernary);
-//    cout << endl;
+
     Ternary **a;
-    counter=0;
     do{
        a = arvBuscaDesb(&myArv.avrTernary);
         arvRotaciona(a);
-        counter++;
-            if (counter%100==0) {
-                cout << counter << endl;
-            }
     }while(a != NULL);
     cout << "done" <<endl;
 
@@ -205,8 +214,29 @@ int main()
 //    cout << endl;
 
     string tmp = "";
+    char c;
+    string word = "";
 
-    searchTernary((char*)"palav", myArv.avrTernary, tmp);
+    while (c != 13){
+
+        system ("CLS");
+        ternaryList(word);
+        printf("%d    ", c);
+        cout << "Texto: ";
+        cout << word;
+        c = getche();
+        if (c == 8 && word.length()>0){
+            word.pop_back();
+        }
+        else if (c >= 97 && c <= 122){
+            word.push_back(c);
+        }
+        tempo = clock();
+        searchTernary(word.c_str(), myArv.avrTernary, tmp);
+        cout << "Tempo: " << float(clock() - tempo) / CLOCKS_PER_SEC;
+    }
+
+    //searchTernary("pa", myArv.avrTernary, tmp);
 
     return 0;
 }

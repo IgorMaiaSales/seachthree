@@ -1,8 +1,11 @@
 # depslib dependency file v1.0
-1575549352 source:c:\users\alunom33\desktop\searchthree\searchtree.cpp
+1575552723 source:c:\users\alunom33\desktop\searchthree\searchtree.cpp
 	<iostream>
 	<fstream>
 	<stdio.h>
 	<stdlib.h>
 	<string>
+	<windows.h>
+	<conio.h>
+	<time.h>
 
